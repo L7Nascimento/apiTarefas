@@ -20,6 +20,7 @@ import com.todolist.tarefas.repositories.TarefaRepository;
 
 
 
+
 @RestController
 @RequestMapping("/tarefas")
 public class TarefasController {
@@ -29,6 +30,8 @@ public class TarefasController {
     @GetMapping
     public List<Tarefa> listar(){
         return tarefaRepository.findAll();
+    // Esta função Usa uma lista do tipo Tarefa que chamamos de listar().
+    //E retorna uma interface tarefaRepository que busca(find) todos(all) os itens da lista.
     }
     @PostMapping // este método leva a anotação que carrega o HTTP POST e vara a requisição ao database
     public Tarefa adicionarTarefa(@RequestBody Tarefa tarefa) {
@@ -39,15 +42,17 @@ public class TarefasController {
         
         return tarefaRepository.save(tarefa);
     }
+    // Buscando itens da lista por ID
     @GetMapping("/{id}")
     public Tarefa adicionarDetalhe(@PathVariable Long id) {
         Optional<Tarefa> tarefaDetalhe = tarefaRepository.findById(id);
-
+    
         if( tarefaDetalhe.isPresent()){
             return tarefaDetalhe.get();
         }
         return null;
     }
+    //UPDATE: criando uma função que atualiza um item da lista
     @PutMapping("/{id}")
     public Tarefa atualizarTarefa(@PathVariable Long id, @RequestBody Tarefa tarefaAtualizada) {
         Optional<Tarefa> tarefaExistente = tarefaRepository.findById(id);
@@ -59,11 +64,17 @@ public class TarefasController {
         }
         return null;
     }
-    
+    //DELETE: Criando uma função que deleta um ID da lista
     @DeleteMapping("/{id}")
     public void deletarTarefa(@PathVariable Long id){
         tarefaRepository.deleteById(id);
     }
+    //DELETE: Criando uma função que deleta todos os itens da LISTA.
+    @DeleteMapping
+    public void detelarTudo() {
+        tarefaRepository.deleteAll();
+    }
+    
     
     
     
